@@ -75,7 +75,7 @@
                         weight: 2,
                         opacity: 0.1,
                         color: 'black',
-                        fillOpacity: 1,
+                        fillOpacity: 0.8,
                         fillColor: getRentColor(feature.properties.total_rentals)
                     };
                 },
@@ -90,7 +90,7 @@
                         weight: 2,
                         opacity: 0.1,
                         color: 'black',
-                        fillOpacity: 1,
+                        fillOpacity: 0.8,
                         fillColor: getBusStopsColor(feature.properties.stopsPerSqKm)
                     };
                 }
@@ -101,7 +101,7 @@
                         weight: 2,
                         opacity: 0.1,
                         color: 'black',
-                        fillOpacity: 1,
+                        fillOpacity: 0.8,
                         fillColor: getFoodDensityColor(feature.properties.kitchensPerSqKm)
                     };
                 }
@@ -112,7 +112,7 @@
                         weight: 2,
                         opacity: 0.1,
                         color: 'black',
-                        fillOpacity: 1,
+                        fillOpacity: 0.8,
                         fillColor: getFoodDensityColor(feature.properties.pantriesPerSqKm)
                     };
                 }
@@ -123,7 +123,7 @@
                         weight: 2,
                         opacity: 0.1,
                         color: 'black',
-                        fillOpacity: 1,
+                        fillOpacity: 0.8,
                         fillColor: getFoodDensityColor(feature.properties.gardensPerSqKm)
                     };
                 }
@@ -152,21 +152,35 @@
             addLayer(pantries, 'Pantries (density)', 4)
             addLayer(gardens, 'Gardens (density)', 5)
 
+            allLayers = [rentLayer, busStops, kitchens, pantries, gardens];
+
             function addLayer(layer, name, zIndex) {
                 layer
-                    .setZIndex(zIndex)
-                    .addTo(map);
+                    .setZIndex(zIndex);
+                    // .addTo(map);
 
                 // Create a simple layer switcher that
                 // toggles layers on and off.
                 var link = document.createElement('a');
                     link.href = '#';
-                    link.className = 'active';
+                    link.className = '';
                     link.innerHTML = name;
 
                 link.onclick = function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+
+                    allLayers.forEach(function(item) {
+                        if (map.hasLayer(item)) {
+                            map.removeLayer(item);
+                            item.className = '';
+                        }
+                    });
+                    menu = document.getElementById('menu-ui');
+                    for (i=0; i<menu.children.length; i++) {
+                        menu.children[i].setAttribute('class','')
+                    }
+                    menu.children.className = '';
 
                     if (map.hasLayer(layer)) {
                         map.removeLayer(layer);
