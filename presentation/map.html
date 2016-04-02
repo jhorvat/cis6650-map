@@ -57,11 +57,6 @@
         <div id='map'></div>
 
         <script src='js/data/wards.js'></script>
-        <script src='js/data/food/aggregate.js'></script>
-        <script src='js/data/food/busStops.js'></script>
-        <script src='js/data/food/gardens.js'></script>
-        <script src='js/data/food/kitchens.js'></script>
-        <script src='js/data/food/pantries.js'></script>
         <script>
             L.mapbox.accessToken = 'pk.eyJ1IjoidGVhbW1pZGRsZXRhYmxlIiwiYSI6ImNpbDZ0cHRuMDA1eml1MGx2bjVvd2RpNm8ifQ.H7TauzsEVrD4fvr0ORQq8w';
             var map = L.mapbox.map('map', 'mapbox.light')
@@ -69,7 +64,7 @@
 
             var layers = document.getElementById('menu-ui');
 
-            var rentLayer = L.geoJson(wardRents, {
+            var rentLayer = L.geoJson(wards, {
                 style: function(feature ) {
                     return {
                         weight: 2,
@@ -84,7 +79,7 @@
                 }
             });
 
-            var busStops = L.geoJson(busStops, {
+            var busStops = L.geoJson(wards, {
                 style: function(feature ) {
                     return {
                         weight: 2,
@@ -95,7 +90,7 @@
                     };
                 }
             });
-            var kitchens = L.geoJson(kitchens, {
+            var kitchens = L.geoJson(wards, {
                 style: function(feature ) {
                     return {
                         weight: 2,
@@ -106,7 +101,7 @@
                     };
                 }
             });
-            var pantries = L.geoJson(pantries, {
+            var pantries = L.geoJson(wards, {
                 style: function(feature ) {
                     return {
                         weight: 2,
@@ -117,7 +112,7 @@
                     };
                 }
             });
-            var gardens = L.geoJson(gardens, {
+            var gardens = L.geoJson(wards, {
                 style: function(feature ) {
                     return {
                         weight: 2,
