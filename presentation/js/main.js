@@ -1,9 +1,10 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoidGVhbW1pZGRsZXRhYmxlIiwiYSI6ImNpbDZ0cHRuMDA1eml1MGx2bjVvd2RpNm8ifQ.H7TauzsEVrD4fvr0ORQq8w';
 
 var map = L.mapbox.map('map', 'mapbox.light')
-            .setView([43.535139, -80.235302], 12),
+            .setView([43.535139, -80.235302], 12);
 
-    layers = document.getElementById('menu-ui'),
+var layerMenu = document.getElementById('menu-ui'),
+    layerItemTemplate = _.template($("#layerTPL").html()),
 
     rentLayer = L.geoJson(wards, {
         style: function(feature ) {
@@ -99,10 +100,7 @@ function addLayer(layer, name, zIndex) {
 
     // Create a simple layer switcher that
     // toggles layers on and off.
-    var link = document.createElement('a');
-        link.href = '#';
-        link.className = '';
-        link.innerHTML = name;
+    var link = $.parseHTML(layerItemTemplate({ layerName: name }).trim())[0];
 
     link.onclick = function(e) {
         e.preventDefault();
@@ -114,21 +112,12 @@ function addLayer(layer, name, zIndex) {
                 item.className = '';
             }
         });
-        menu = document.getElementById('menu-ui');
-        for (i=0; i<menu.children.length; i++) {
-            menu.children[i].setAttribute('class','')
-        }
-        menu.children.className = '';
 
-        if (map.hasLayer(layer)) {
-            map.removeLayer(layer);
-            this.className = '';
-        } else {
-            map.addLayer(layer);
-            this.className = 'active';
-        }
+        $(".menu-ui a").removeClass("active")
+        $(this).addClass('active');
+        map.addLayer(layer);
     };
-    layers.appendChild(link);
+    layerMenu.appendChild(link);
 }
 
 function getRentColor(d) {
