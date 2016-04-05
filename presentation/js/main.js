@@ -1,4 +1,5 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoidGVhbW1pZGRsZXRhYmxlIiwiYSI6ImNpbDZ0cHRuMDA1eml1MGx2bjVvd2RpNm8ifQ.H7TauzsEVrD4fvr0ORQq8w';
+
 var map = L.mapbox.map('map', 'mapbox.light')
             .setView([43.535139, -80.235302], 12),
 
