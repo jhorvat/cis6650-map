@@ -1,68 +1,71 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoidGVhbW1pZGRsZXRhYmxlIiwiYSI6ImNpbDZ0cHRuMDA1eml1MGx2bjVvd2RpNm8ifQ.H7TauzsEVrD4fvr0ORQq8w';
 var map = L.mapbox.map('map', 'mapbox.light')
-            .setView([43.535139, -80.235302], 12);
+            .setView([43.535139, -80.235302], 12),
 
-var layers = document.getElementById('menu-ui');
+    layers = document.getElementById('menu-ui'),
 
-var rentLayer = L.geoJson(wards, {
-    style: function(feature ) {
-        return {
-            weight: 2,
-            opacity: 0.1,
-            color: 'black',
-            fillOpacity: 0.8,
-            fillColor: getRentColor(feature.properties.total_rentals)
-        };
-    },
-    onEachFeature: function(feature) {
-        //alert(feature.properties.total_rentals);
-    }
-});
+    rentLayer = L.geoJson(wards, {
+        style: function(feature ) {
+            return {
+                weight: 2,
+                opacity: 0.1,
+                color: 'black',
+                fillOpacity: 0.8,
+                fillColor: getRentColor(feature.properties.total_rentals)
+            };
+        },
+        onEachFeature: function(feature) {
+            //alert(feature.properties.total_rentals);
+        }
+    }),
 
-var busStops = L.geoJson(wards, {
-    style: function(feature ) {
-        return {
-            weight: 2,
-            opacity: 0.1,
-            color: 'black',
-            fillOpacity: 0.8,
-            fillColor: getBusStopsColor(feature.properties.stopsPerSqKm)
-        };
-    }
-});
-var kitchens = L.geoJson(wards, {
-    style: function(feature ) {
-        return {
-            weight: 2,
-            opacity: 0.1,
-            color: 'black',
-            fillOpacity: 0.8,
-            fillColor: getFoodDensityColor(feature.properties.kitchensPerSqKm)
-        };
-    }
-});
-var pantries = L.geoJson(wards, {
-    style: function(feature ) {
-        return {
-            weight: 2,
-            opacity: 0.1,
-            color: 'black',
-            fillOpacity: 0.8,
-            fillColor: getFoodDensityColor(feature.properties.pantriesPerSqKm)
-        };
-    }
-});
-var gardens = L.geoJson(wards, {
-    style: function(feature ) {
-        return {
-            weight: 2,
-            opacity: 0.1,
-            color: 'black',
-            fillOpacity: 0.8,
-            fillColor: getFoodDensityColor(feature.properties.gardensPerSqKm)
-        };
-    }
-});
+    busStops = L.geoJson(wards, {
+        style: function(feature ) {
+            return {
+                weight: 2,
+                opacity: 0.1,
+                color: 'black',
+                fillOpacity: 0.8,
+                fillColor: getBusStopsColor(feature.properties.stopsPerSqKm)
+            };
+        }
+    }),
+
+    kitchens = L.geoJson(wards, {
+        style: function(feature ) {
+            return {
+                weight: 2,
+                opacity: 0.1,
+                color: 'black',
+                fillOpacity: 0.8,
+                fillColor: getFoodDensityColor(feature.properties.kitchensPerSqKm)
+            };
+        }
+    }),
+
+    pantries = L.geoJson(wards, {
+        style: function(feature ) {
+            return {
+                weight: 2,
+                opacity: 0.1,
+                color: 'black',
+                fillOpacity: 0.8,
+                fillColor: getFoodDensityColor(feature.properties.pantriesPerSqKm)
+            };
+        }
+    }),
+
+    gardens = L.geoJson(wards, {
+        style: function(feature ) {
+            return {
+                weight: 2,
+                opacity: 0.1,
+                color: 'black',
+                fillOpacity: 0.8,
+                fillColor: getFoodDensityColor(feature.properties.gardensPerSqKm)
+            };
+        }
+    });
 
 // TODO -
 // var foodAggregateLayer = L.geoJson(, {
@@ -90,8 +93,7 @@ addLayer(gardens, 'Gardens (density)', 5)
 allLayers = [rentLayer, busStops, kitchens, pantries, gardens];
 
 function addLayer(layer, name, zIndex) {
-    layer
-        .setZIndex(zIndex);
+    layer.setZIndex(zIndex);
         // .addTo(map);
 
     // Create a simple layer switcher that
