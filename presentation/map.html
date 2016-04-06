@@ -34,7 +34,7 @@
                 top: 10px;
                 right: 10px;
                 z-index: 1;
-                width: 120px;
+                width: 150px;
                 border: 1px solid rgba(0,0,0,0.4);
             }
 
@@ -42,11 +42,22 @@
                 padding: 0.8rem;
             }
 
+            .menu-ui .card-block:not(:last-child) {
+                border-bottom: 1px solid rgba(0,0,0,0.4);
+            }
+
+            .menu-ui .card-title {
+                margin-bottom: 0;    
+            }
+
             .menu-ui .card-title a {
                 font-weight: bold;
                 font-size: 13px;
                 color: #000;
                 text-decoration: none;
+                width: 100%;
+                display: block;
+                line-height: 30px;
             }
 
             .menu-ui .card-title a:hover {
@@ -55,41 +66,32 @@
         </style>
     </head>
     <body>
-        <nav id='menu-ui' class='card menu-ui text-xs-center' role="tablist" aria-multiselectable="true">
+        <div id='menu-ui' class='card menu-ui text-xs-center' role="tablist" aria-multiselectable="true">
             <div class="card-block">
                 <div class="card-title" id="headingOne" role="tab">
                     <a href="#collapseOne" data-toggle="collapse" data-parent="#menu-ui" aria-expanded="true" aria-controls="collapseOne">Food</a>
                 </div>
-                <ul class="list-group collapse in" id="collapseOne" role="tabpanel" aria-labelledby="headingOne">
-                    <li class="list-group-item">Test</li>
-                    <li class="list-group-item">Test</li>
-                </ul>
+                <ul class="list-group collapse in" id="collapseOne" role="tabpanel" aria-labelledby="headingOne"></ul>
             </div>
 
             <div class="card-block">
                 <div class="card-title" id="headingTwo" role="tab">
                     <a href="#collapseTwo" data-toggle="collapse" data-parent="#menu-ui" aria-expanded="false" aria-controls="collapseTwo">Rent</a>
                 </div>
-                <ul class="list-group collapse" id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo">
-                    <li class="list-group-item">Test</li>
-                    <li class="list-group-item">Test</li>
-                </ul>
+                <ul class="list-group collapse" id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo"></ul>
             </div>
 
             <div class="card-block">
                 <div class="card-title" id="headingThree" role="tab">
                     <a href="#collapseThree" data-toggle="collapse" data-parent="#menu-ui" aria-expanded="false" aria-controls="collapseThree">Income</a>
                 </div>
-                <ul class="list-group collapse" id="collapseThree" role="tabpanel" aria-labelledby="headingThree">
-                    <li class="list-group-item">Test</li>
-                    <li class="list-group-item">Test</li>
-                </ul>
+                <ul class="list-group collapse" id="collapseThree" role="tabpanel" aria-labelledby="headingThree"></ul>
             </div>
-        </nav>
+        </div>
         <div id='map'></div>
 
         <script id="layerTPL" type="text/template">
-            <a href="#"><%= layerName %></a>
+            <li class="list-group-item"><%= layerName %></li>
         </script>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

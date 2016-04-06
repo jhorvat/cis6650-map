@@ -3,7 +3,11 @@ L.mapbox.accessToken = 'pk.eyJ1IjoidGVhbW1pZGRsZXRhYmxlIiwiYSI6ImNpbDZ0cHRuMDA1e
 var map = L.mapbox.map('map', 'mapbox.light')
             .setView([43.535139, -80.235302], 12);
 
-var layerMenu = document.getElementById('menu-ui'),
+var layerMenus = {
+        "food": $("#collapseOne"),
+        "rent": $("#collapseTwo"),
+        "income": $("#collapseThree"),
+    },
     layerItemTemplate = _.template($("#layerTPL").html()),
 
     rentLayer = L.geoJson(wards, {
@@ -86,22 +90,22 @@ var layerMenu = document.getElementById('menu-ui'),
 // });
 // foodLayers.push(foodAggregateLayer)
 
-// addLayer(rentLayer, 'Rent Layer', 1)
-// addLayer(busStops, 'Bus Stops (density)', 2)
-// addLayer(kitchens, 'Kitchens (density)', 3)
-// addLayer(pantries, 'Pantries (density)', 4)
-// addLayer(gardens, 'Gardens (density)', 5)
-//
-// allLayers = [rentLayer, busStops, kitchens, pantries, gardens];
+addLayer(rentLayer, layerMenus["rent"], 'Rent Layer', 1)
+addLayer(busStops, layerMenus["income"], 'Bus Stops (density)', 2)
+addLayer(kitchens, layerMenus["food"], 'Kitchens (density)', 3)
+addLayer(pantries, layerMenus["food"], 'Pantries (density)', 4)
+addLayer(gardens, layerMenus["food"], 'Gardens (density)', 5)
 
-function addLayer(layer, name, zIndex) {
+allLayers = [rentLayer, busStops, kitchens, pantries, gardens];
+
+function addLayer(layer, layerMenu, name, zIndex) {
     layer.setZIndex(zIndex);
         // .addTo(map);
 
     // Create a simple layer switcher that
     // toggles layers on and off.
     var link = $.parseHTML(layerItemTemplate({ layerName: name }).trim())[0];
-
+    console.log(layerMenu);
     link.onclick = function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -113,11 +117,11 @@ function addLayer(layer, name, zIndex) {
             }
         });
 
-        $(".menu-ui a").removeClass("active")
+        $(".menu-ui .list-group-item").removeClass("active")
         $(this).addClass('active');
         map.addLayer(layer);
     };
-    layerMenu.appendChild(link);
+    layerMenu.append(link);
 }
 
 function getRentColor(d) {
