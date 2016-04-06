@@ -10,6 +10,18 @@ var layerMenus = {
     },
     layerItemTemplate = _.template($("#layerTPL").html()),
 
+    wardLabelsLayer = L.geoJson(wardLabels, {
+        pointToLayer: function(feature, ll) {
+            return L.marker(ll, {
+                icon: L.divIcon({
+                    className: 'label',
+                    html: feature.properties.title,
+                    iconSize: [100, 40]
+                })
+            });
+        }
+    }),
+
     rentLayer = L.geoJson(wards, {
         style: function(feature ) {
             return {
@@ -89,6 +101,8 @@ var layerMenus = {
 //     }
 // });
 // foodLayers.push(foodAggregateLayer)
+
+map.addLayer(wardLabelsLayer);
 
 addLayer(rentLayer, layerMenus["rent"], 'Rent Layer', 1)
 addLayer(busStops, layerMenus["income"], 'Bus Stops (density)', 2)
