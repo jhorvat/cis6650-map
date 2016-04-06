@@ -10,7 +10,7 @@ var ward1 = {
     };
 
     var food = {
-        market_basket: 50, //still need to compute by ward
+        market_basket: 54.82,
         community_kitchens: 1,
         food_pantries: 11,
         community_gardens: 4,
@@ -35,7 +35,8 @@ var ward1 = {
     };
 
     var housing = {
-        average_rent: 500,
+        median_rent_unit: 572.50,
+        average_rent_unit: 737.29,
     };
 };
 
@@ -49,7 +50,7 @@ var ward2 = {
     };
 
     var food = {
-        market_basket: 50,
+        market_basket: 38.73,
         community_kitchens: 3,
         food_pantries: 4,
         community_gardens: 2,
@@ -74,7 +75,8 @@ var ward2 = {
     };
 
     var housing = {
-        average_rent: 500,
+        median_rent_unit: 900.00,
+        average_rent_unit: 567.22,
     };
 };
 
@@ -88,7 +90,7 @@ var ward3 = {
     };
 
     var food = {
-        market_basket: 50, //...
+        market_basket: 41.31,
         community_kitchens: 0,
         food_pantries: 6,
         community_gardens: 4,
@@ -113,7 +115,8 @@ var ward3 = {
     };
 
     var housing = {
-        average_rent: 500,
+        median_rent_unit: 612.50,
+        average_rent_unit: 497.76,
     };
 };
 
@@ -127,7 +130,7 @@ var ward4 = {
     };
 
     var food = {
-        market_basket: 50, //...
+        market_basket: 48.20,
         community_kitchens: 0,
         food_pantries: 4,
         community_gardens: 3,
@@ -152,7 +155,8 @@ var ward4 = {
     };
 
     var housing = {
-        average_rent: 500,
+        median_rent_unit: 600.00,
+        average_rent_unit: 462.40,
     };
 };
 
@@ -166,7 +170,7 @@ var ward5 = {
     };
 
     var food = {
-        market_basket: 50, //...
+        market_basket: 41.58,
         community_kitchens: 0,
         food_pantries: 1,
         community_gardens: 4,
@@ -191,7 +195,8 @@ var ward5 = {
     };
 
     var housing = {
-        average_rent: 500,
+        median_rent_unit: 500.00,
+        average_rent_unit: 473.26,
     };
 };
 
@@ -205,7 +210,7 @@ var ward6 = {
     };
 
     var food = {
-        market_basket: 50, //...
+        market_basket: 48.20,
         community_kitchens: 0,
         food_pantries: 0,
         community_gardens: 0,
@@ -230,6 +235,7 @@ var ward6 = {
     };
 
     var housing = {
-        average_rent: 500,
+        median_rent_unit: 500,
+        average_rent_unit: 458.78,
     };
 };
