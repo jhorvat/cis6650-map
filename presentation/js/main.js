@@ -3,6 +3,22 @@ L.mapbox.accessToken = 'pk.eyJ1IjoidGVhbW1pZGRsZXRhYmxlIiwiYSI6ImNpbDZ0cHRuMDA1e
 var map = L.mapbox.map('map', 'mapbox.light')
             .setView([43.535139, -80.235302], 12);
 
+var getWardData = function(wardNum) {
+    if (wardNum == "1") {
+        return ward1;
+    } else if (wardNum == "2") {
+        return ward2;
+    } else if (wardNum == "3") {
+        return ward3;
+    } else if (wardNum == "4") {
+        return ward4;
+    } else if (wardNum == "5") {
+        return ward5;
+    } else if (wardNum == "6") {
+        return ward6;
+    }
+};
+
 var layerMenus = {
         "food": $("#collapseOne"),
         "rent": $("#collapseTwo"),
@@ -10,93 +26,110 @@ var layerMenus = {
     },
     layerItemTemplate = _.template($("#layerTPL").html()),
 
-    rentLayer = L.geoJson(wards, {
+    //Food
+    // aggregate = L.geoJson(wards, {
+    //     style: function(feature ) {
+    //         wardData = getWardData(feature.properties.WARD)
+    //         return {
+    //             weight: 2,
+    //             opacity: 0.1,
+    //             color: 'black',
+    //             fillOpacity: 0.8,
+    //             fillColor: getRentColor(wardData.housing.median_rent_unit)
+    //         };
+    //     }
+    // }),
+
+    marketBasket = L.geoJson(wards, {
         style: function(feature ) {
+            wardData = getWardData(feature.properties.WARD);
             return {
                 weight: 2,
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getRentColor(feature.properties.total_rentals)
+                fillColor: getRentColor(wardData.food.market_basket)
             };
-        },
-        onEachFeature: function(feature) {
-            //alert(feature.properties.total_rentals);
         }
     }),
 
     busStops = L.geoJson(wards, {
         style: function(feature ) {
+            wardData = getWardData(feature.properties.WARD);
+            value = wardData.food.bus_stops / wardData.general.area
             return {
                 weight: 2,
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getBusStopsColor(feature.properties.stopsPerSqKm)
+                fillColor: getBusStopsColor(value)
             };
         }
     }),
 
-    kitchens = L.geoJson(wards, {
+    //Housing 
+    medRentLayer = L.geoJson(wards, {
         style: function(feature ) {
+            wardData = getWardData(feature.properties.WARD);
             return {
                 weight: 2,
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getFoodDensityColor(feature.properties.kitchensPerSqKm)
+                fillColor: getRentColor(wardData.housing.median_rent_unit)
             };
         }
     }),
 
-    pantries = L.geoJson(wards, {
+    avgRentLayer = L.geoJson(wards, {
         style: function(feature ) {
+            wardData = getWardData(feature.properties.WARD);
             return {
                 weight: 2,
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getFoodDensityColor(feature.properties.pantriesPerSqKm)
+                fillColor: getRentColor(wardData.housing.average_rent_unit)
             };
         }
     }),
 
-    gardens = L.geoJson(wards, {
+    //Income & Employment
+    // aggregate = L.geoJson(wards, {
+    //     style: function(feature ) {
+    //         wardData = getWardData(feature.properties.WARD)
+    //         return {
+    //             weight: 2,
+    //             opacity: 0.1,
+    //             color: 'black',
+    //             fillOpacity: 0.8,
+    //             fillColor: getRentColor(wardData.income.median_rent_unit)
+    //         };
+    //     }
+    // }),
+
+    medFamIncLayer = L.geoJson(wards, {
         style: function(feature ) {
+            wardData = getWardData(feature.properties.WARD);
             return {
                 weight: 2,
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getFoodDensityColor(feature.properties.gardensPerSqKm)
+                fillColor: getRentColor(wardData.income.median_fam)
             };
         }
     });
 
-// TODO -
-// var foodAggregateLayer = L.geoJson(, {
-//     style: function(feature ) {
-//         return {
-//             weight: 2,
-//             opacity: 0.1,
-//             color: 'black',
-//             fillOpacity: 0.8,
-//             fillColor: getColor(feature.properties.food_aggregate)
-//         };
-//     },
-//     onEachFeature: function(feature) {
-//         //calculate the aggregate value based on the other food layers
-//     }
-// });
-// foodLayers.push(foodAggregateLayer)
+addLayer(medRentLayer, layerMenus["rent"], 'Median Rent / Unit', 1)
+addLayer(avgRentLayer, layerMenus["rent"], 'Average Rent / Unit', 2)
 
-addLayer(rentLayer, layerMenus["rent"], 'Rent Layer', 1)
-addLayer(busStops, layerMenus["income"], 'Bus Stops (density)', 2)
-addLayer(kitchens, layerMenus["food"], 'Kitchens (density)', 3)
-addLayer(pantries, layerMenus["food"], 'Pantries (density)', 4)
-addLayer(gardens, layerMenus["food"], 'Gardens (density)', 5)
+addLayer(marketBasket, layerMenus["food"], 'Market Basket Measure', 3)
+addLayer(busStops, layerMenus["food"], 'Bus Stops (density)', 4)
 
-allLayers = [rentLayer, busStops, kitchens, pantries, gardens];
+addLayer(medFamIncLayer, layerMenus["income"], 'Median Family Income', 3)
+
+allLayers = [medRentLayer, avgRentLayer, marketBasket, busStops, medFamIncLayer];
 
 function addLayer(layer, layerMenu, name, zIndex) {
     layer.setZIndex(zIndex);
