@@ -86,13 +86,13 @@ var layerMenu = document.getElementById('menu-ui'),
 // });
 // foodLayers.push(foodAggregateLayer)
 
-addLayer(rentLayer, 'Rent Layer', 1)
-addLayer(busStops, 'Bus Stops (density)', 2)
-addLayer(kitchens, 'Kitchens (density)', 3)
-addLayer(pantries, 'Pantries (density)', 4)
-addLayer(gardens, 'Gardens (density)', 5)
-
-allLayers = [rentLayer, busStops, kitchens, pantries, gardens];
+// addLayer(rentLayer, 'Rent Layer', 1)
+// addLayer(busStops, 'Bus Stops (density)', 2)
+// addLayer(kitchens, 'Kitchens (density)', 3)
+// addLayer(pantries, 'Pantries (density)', 4)
+// addLayer(gardens, 'Gardens (density)', 5)
+//
+// allLayers = [rentLayer, busStops, kitchens, pantries, gardens];
 
 function addLayer(layer, name, zIndex) {
     layer.setZIndex(zIndex);
