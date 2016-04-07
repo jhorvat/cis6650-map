@@ -75,6 +75,7 @@ var layerMenus = {
         "income": $("#collapseThree"),
     },
     layerItemTemplate = _.template($("#layerTPL").html()),
+    legendUnitTemplate = _.template($("#legendUnitTPL").html()),
 
     wardLabelsLayer = L.geoJson(wardLabels, {
         pointToLayer: function(feature, ll) {
@@ -225,19 +226,19 @@ function getAggregateValue(dataSet) {
     return value
 }
 
-addLayer(medRentLayer, layerMenus["rent"], 'Median Rent / Unit', 1)
-addLayer(avgRentLayer, layerMenus["rent"], 'Average Rent / Unit', 2)
+addLayer(medRentLayer, layerMenus["rent"], 'Median Rent / Unit', 1, rentBreaks)
+addLayer(avgRentLayer, layerMenus["rent"], 'Average Rent / Unit', 2, rentBreaks)
 
-addLayer(foodAggregate, layerMenus["food"], 'Food Aggregate', 1)
-addLayer(marketBasket, layerMenus["food"], 'Market Basket Measure', 3)
-addLayer(busStops, layerMenus["food"], 'Bus Stops (density)', 4)
+addLayer(foodAggregate, layerMenus["food"], 'Food Aggregate', 1, aggregateBreaks)
+addLayer(marketBasket, layerMenus["food"], 'Market Basket Measure ($)', 3, mbmBreaks)
+addLayer(busStops, layerMenus["food"], 'Bus Stops (stops/sqkm)', 4, busBreaks)
 
-addLayer(incomeAggregate, layerMenus["income"], 'Income Aggregate', 1)
-addLayer(medFamIncLayer, layerMenus["income"], 'Median Family Income', 3)
+addLayer(incomeAggregate, layerMenus["income"], 'Income Aggregate', 1, aggregateBreaks)
+addLayer(medFamIncLayer, layerMenus["income"], 'Median Family Income ($)', 3, medIncomeBreaks)
 
 allLayers = [medRentLayer, avgRentLayer, foodAggregate, marketBasket, busStops, incomeAggregate, medFamIncLayer, wardLabelsLayer];
 
-function addLayer(layer, layerMenu, name, zIndex) {
+function addLayer(layer, layerMenu, name, zIndex, breaks) {
     layer.setZIndex(zIndex);
         // .addTo(map);
 
@@ -250,8 +251,6 @@ function addLayer(layer, layerMenu, name, zIndex) {
         map.addLayer(wardLabelsLayer);
     }
 
-    console.log(layerMenu);
-
     link.onclick = function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -262,6 +261,20 @@ function addLayer(layer, layerMenu, name, zIndex) {
                 item.className = '';
             }
         });
+
+        var legend = $(".legend");
+
+        legend.empty();
+        legend.append(legendUnitTemplate({
+            colour: "#feedde",
+            unit: "0",
+        }));
+        for (var key in breaks) {
+            legend.append(legendUnitTemplate({
+                colour: breaks[key],
+                unit: key,
+            }));
+        }
 
         $(".menu-ui .list-group-item").removeClass("active")
         $(this).addClass('active');

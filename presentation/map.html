@@ -16,159 +16,47 @@
 
         <script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
         <link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-            }
-
-            #map {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                width: 100%;
-            }
-
-            .ward-label {
-                font-size: 2.15rem;
-                line-height: 60px;
-                text-align: center;
-                font-weight: bold;
-                color: rgba(0,0,0,0.65);
-            }
-
-            .menu-ui {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                z-index: 1;
-                width: 250px;
-                border: 1px solid rgba(0,0,0,0.4);
-            }
-
-            .menu-ui .card-block {
-                padding: 0.8rem;
-            }
-
-            .menu-ui .card-block:not(:last-child) {
-                border-bottom: 1px solid rgba(0,0,0,0.4);
-            }
-
-            .menu-ui .card-title {
-                margin-bottom: 0;
-                font-weight: bold;
-                font-size: 13px;
-                color: #000;
-                width: 100%;
-                display: block;
-                line-height: 30px;
-            }
-
-            .menu-ui .card-title a {
-                color: #000;
-                text-decoration: none;
-            }
-
-            .menu-ui .card-title a:hover {
-                color: #404040;
-            }
-
-            .step {
-                margin-bottom: .2rem;
-                text-align: right;
-                font-size: .9rem;
-            }
-
-            .step span {
-                width: 50%;
-            }
-
-            .legend {
-                display: flex;
-                flex-wrap: wrap;
-                text-align: center;
-                font-size: 9px;
-                color: #808080;
-            }
-
-            .unit {
-                flex-grow: 1;
-                min-width: 12.5%;
-            }
-
-            .unit label {
-                margin-bottom: .25rem;
-            }
-
-            .unit span {
-                display: block;
-                height: 15px;
-            }
-
-            .scale {
-                margin-bottom: 0;
-                color: #808080;
-                font-size: .70rem;
-            }
-        </style>
+        <link href='css/map.css' rel='stylesheet' />
     </head>
     <body>
         <div id='menu-ui' class='card menu-ui text-xs-center' role="tablist" aria-multiselectable="true">
-            <div id="legend" class="card-block">
-                <div class="card-title">Legend</div>
-                <div class="legend">
-                    <div class="unit">
-                        <span style='background:#feedde;'></span>
-                        <label>0</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#fdd0a2;'></span>
-                        <label>20</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#fdae6b;'></span>
-                        <label>40</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#fd8d3c;'></span>
-                        <label>60</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#e6550d;'></span>
-                        <label>80</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#a63603;'></span>
-                        <label>100</label>
-                    </div>
-                </div>
-                <p class="scale">Percent (%)</p>
-            </div>
             <div class="card-block">
-                <div class="card-title" id="headingOne" role="tab">
+                <div class="card-title">Legend</div>
+                <div class="legend"></div>
+            </div>
+
+            <div class="card-block panel">
+                <div class="card-title panel-title" id="headingOne" role="tab">
                     <a href="#collapseOne" data-toggle="collapse" data-parent="#menu-ui" aria-expanded="true" aria-controls="collapseOne">Food</a>
                 </div>
-                <ul class="list-group collapse in" id="collapseOne" role="tabpanel" aria-labelledby="headingOne"></ul>
+                <ul class="list-group panel-collapse collapse in" id="collapseOne" role="tabpanel" aria-labelledby="headingOne"></ul>
             </div>
 
-            <div class="card-block">
-                <div class="card-title" id="headingTwo" role="tab">
+            <div class="card-block panel">
+                <div class="card-title panel-title" id="headingTwo" role="tab">
                     <a href="#collapseTwo" data-toggle="collapse" data-parent="#menu-ui" aria-expanded="false" aria-controls="collapseTwo">Rent</a>
                 </div>
-                <ul class="list-group collapse" id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo"></ul>
+                <ul class="list-group panel-collapse collapse" id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo"></ul>
             </div>
 
-            <div class="card-block">
-                <div class="card-title" id="headingThree" role="tab">
+            <div class="card-block panel">
+                <div class="card-title panel-title" id="headingThree" role="tab">
                     <a href="#collapseThree" data-toggle="collapse" data-parent="#menu-ui" aria-expanded="false" aria-controls="collapseThree">Income</a>
                 </div>
-                <ul class="list-group collapse" id="collapseThree" role="tabpanel" aria-labelledby="headingThree"></ul>
+                <ul class="list-group panel-collapse collapse" id="collapseThree" role="tabpanel" aria-labelledby="headingThree"></ul>
             </div>
         </div>
         <div id='map'></div>
 
         <script id="layerTPL" type="text/template">
             <li class="list-group-item"><%= layerName %></li>
+        </script>
+
+        <script id="legendUnitTPL" type="text/template">
+            <div class="unit">
+                <span style='background:<%= colour %>;'></span>
+                <label><%= unit %></label>
+            </div>
         </script>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
