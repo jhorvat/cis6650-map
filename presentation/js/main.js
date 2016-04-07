@@ -29,12 +29,64 @@ var getWardData = function(wardNum) {
     }
 };
 
+var aggregateBreaks = {
+    0.001: '#fdd0a2',
+    0.2: '#fdae6b',
+    0.4: '#fd8d3c',
+    0.6: '#e6550d',
+    0.8: '#a63603'
+}
+
+var mbmBreaks = {
+    30: '#fdd0a2',
+    40: '#fdae6b',
+    45: '#fd8d3c',
+    50: '#e6550d',
+    55: '#a63603'
+}
+
+var busBreaks = {
+    2: '#fdd0a2',
+    4: '#fdae6b',
+    6: '#fd8d3c',
+    8: '#e6550d',
+    10: '#a63603'
+}
+
+var medIncomeBreaks = {
+    50000: '#fdd0a2',
+    60000: '#fdae6b',
+    70000: '#fd8d3c',
+    80000: '#e6550d',
+    100000: '#a63603'
+}
+
+var rentBreaks = {
+    400: '#fdd0a2',
+    500: '#fdae6b',
+    600: '#fd8d3c',
+    700: '#e6550d',
+    1000: '#a63603'
+}
+
 var layerMenus = {
         "food": $("#collapseOne"),
         "rent": $("#collapseTwo"),
         "income": $("#collapseThree"),
     },
     layerItemTemplate = _.template($("#layerTPL").html()),
+
+    wardLabelsLayer = L.geoJson(wardLabels, {
+        pointToLayer: function(feature, ll) {
+            return L.marker(ll, {
+                icon: L.divIcon({
+                    className: 'ward-label',
+                    html: feature.properties.title,
+                    iconSize: [60, 60]
+                })
+            });
+        }
+    }),
 
     //Food
     foodAggregate = L.geoJson(wards, {
@@ -71,20 +123,8 @@ var layerMenus = {
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getRentColor(value)
+                fillColor: getColour(value, aggregateBreaks)
             };
-        }
-    }),
-
-    wardLabelsLayer = L.geoJson(wardLabels, {
-        pointToLayer: function(feature, ll) {
-            return L.marker(ll, {
-                icon: L.divIcon({
-                    className: 'ward-label',
-                    html: feature.properties.title,
-                    iconSize: [60, 60]
-                })
-            });
         }
     }),
 
@@ -96,7 +136,7 @@ var layerMenus = {
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getRentColor(wardData.food.market_basket)
+                fillColor: getColour(wardData.food.market_basket, mbmBreaks)
             };
         }
     }),
@@ -110,7 +150,7 @@ var layerMenus = {
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getBusStopsColor(value)
+                fillColor: getColour(value, busBreaks)
             };
         }
     }),
@@ -124,7 +164,7 @@ var layerMenus = {
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getRentColor(wardData.housing.median_rent_unit)
+                fillColor: getColour(wardData.housing.median_rent_unit, rentBreaks)
             };
         }
     }),
@@ -137,7 +177,7 @@ var layerMenus = {
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getRentColor(wardData.housing.average_rent_unit)
+                fillColor: getColour(wardData.housing.average_rent_unit, rentBreaks)
             };
         }
     }),
@@ -176,7 +216,7 @@ var layerMenus = {
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getRentColor(value)
+                fillColor: getColour(value, aggregateBreaks) // TODO?
             };
         }
     }),
@@ -189,7 +229,7 @@ var layerMenus = {
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getRentColor(wardData.income_employment.median_fam)
+                fillColor: getColour(wardData.income_employment.median_fam, medIncomeBreaks)
             };
         }
     });
@@ -233,27 +273,12 @@ function addLayer(layer, layerMenu, name, zIndex) {
     layerMenu.append(link);
 }
 
-function getRentColor(d) {
-    return d > 8296  ? '#a63603' :
-        d > 6639  ? '#e6550d' :
-        d > 4980  ? '#fd8d3c' :
-        d > 3319   ? '#fdae6b' :
-        d > 1659   ? '#fdd0a2' :
-        '#feedde';
-}
-function getBusStopsColor(d) {
-    return d > 10  ? '#a63603' :
-        d > 8  ? '#e6550d' :
-        d > 6  ? '#fd8d3c' :
-        d > 4   ? '#fdae6b' :
-        d > 2   ? '#fdd0a2' :
-        '#feedde';
-}
-function getFoodDensityColor(d) {
-    return d > 0.8  ? '#a63603' :
-        d > 0.7  ? '#e6550d' :
-        d > 0.5  ? '#fd8d3c' :
-        d > 0.1   ? '#fdae6b' :
-        d > 0.01   ? '#fdd0a2' :
-        '#feedde';
+function getColour(val, breaks) {
+    colour = '#feedde'
+    for (var key in breaks) {
+        if (val > Number(key)) {
+            colour = breaks[key]
+        }
+    }
+    return colour
 }
