@@ -42,7 +42,7 @@
                 top: 10px;
                 right: 10px;
                 z-index: 1;
-                width: 150px;
+                width: 250px;
                 border: 1px solid rgba(0,0,0,0.4);
             }
 
@@ -56,25 +56,94 @@
 
             .menu-ui .card-title {
                 margin-bottom: 0;
-            }
-
-            .menu-ui .card-title a {
                 font-weight: bold;
                 font-size: 13px;
                 color: #000;
-                text-decoration: none;
                 width: 100%;
                 display: block;
                 line-height: 30px;
             }
 
+            .menu-ui .card-title a {
+                color: #000;
+                text-decoration: none;
+            }
+
             .menu-ui .card-title a:hover {
                 color: #404040;
+            }
+
+            .step {
+                margin-bottom: .2rem;
+                text-align: right;
+                font-size: .9rem;
+            }
+
+            .step span {
+                width: 50%;
+            }
+
+            .legend {
+                display: flex;
+                flex-wrap: wrap;
+                text-align: center;
+                font-size: 9px;
+                color: #808080;
+            }
+
+            .unit {
+                flex-grow: 1;
+                min-width: 12.5%;
+            }
+
+            .unit label {
+                margin-bottom: .25rem;
+            }
+
+            .unit span {
+                display: block;
+                height: 15px;
+            }
+
+            .scale {
+                margin-bottom: 0;
+                color: #808080;
+                font-size: .70rem;
             }
         </style>
     </head>
     <body>
         <div id='menu-ui' class='card menu-ui text-xs-center' role="tablist" aria-multiselectable="true">
+            <div id="legend" class="card-block">
+                <div class="card-title">Legend</div>
+                <div class="legend">
+                    <div class="unit">
+                        <span style='background:#feedde;'></span>
+                        <label>0</label>
+                    </div>
+                    <div class="unit">
+                        <span style='background:#fdd0a2;'></span>
+                        <label>20</label>
+                    </div>
+                    <div class="unit">
+                        <span style='background:#fdae6b;'></span>
+                        <label>40</label>
+                    </div>
+                    <div class="unit">
+                        <span style='background:#fd8d3c;'></span>
+                        <label>60</label>
+                    </div>
+                    <div class="unit">
+                        <span style='background:#e6550d;'></span>
+                        <label>80</label>
+                    </div>
+                    <div class="unit">
+                        <span style='background:#a63603;'></span>
+                        <label>100</label>
+                    </div>
+                </div>
+                <p class="scale">Percent (%)</p>
+            </div>
             <div class="card-block">
                 <div class="card-title" id="headingOne" role="tab">
                     <a href="#collapseOne" data-toggle="collapse" data-parent="#menu-ui" aria-expanded="true" aria-controls="collapseOne">Food</a>
