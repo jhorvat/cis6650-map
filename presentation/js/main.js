@@ -233,7 +233,7 @@ addLayer(foodAggregate, layerMenus["food"], 'Food Aggregate', 1, aggregateBreaks
 addLayer(marketBasket, layerMenus["food"], 'Market Basket Measure ($)', 3, mbmBreaks)
 addLayer(busStops, layerMenus["food"], 'Bus Stops (stops/sqkm)', 4, busBreaks)
 
-addLayer(incomeAggregate, layerMenus["income"], 'Income Aggregate', 1, aggregateBreaks)
+addLayer(incomeAggregate, layerMenus["income"], 'Income & Employment Aggregate', 1, aggregateBreaks)
 addLayer(medFamIncLayer, layerMenus["income"], 'Median Family Income ($)', 3, medIncomeBreaks)
 
 allLayers = [medRentLayer, avgRentLayer, foodAggregate, marketBasket, busStops, incomeAggregate, medFamIncLayer, wardLabelsLayer];
