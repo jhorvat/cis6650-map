@@ -27,18 +27,44 @@ var layerMenus = {
     layerItemTemplate = _.template($("#layerTPL").html()),
 
     //Food
-    // aggregate = L.geoJson(wards, {
-    //     style: function(feature ) {
-    //         wardData = getWardData(feature.properties.WARD)
-    //         return {
-    //             weight: 2,
-    //             opacity: 0.1,
-    //             color: 'black',
-    //             fillOpacity: 0.8,
-    //             fillColor: getRentColor(wardData.housing.median_rent_unit)
-    //         };
-    //     }
-    // }),
+    foodAggregate = L.geoJson(wards, {
+        style: function(feature ) {
+            wardData = getWardData(feature.properties.WARD)
+            values = [];
+            min = 0;
+            max = 0;
+            i = 0;
+            for (var key in wardData.food) {
+                if (i == 0) {
+                    min = wardData.food[key];
+                    max = wardData.food[key];
+                } else {
+                    tmp = wardData.food[key];
+                    if (tmp > max) {
+                        max = tmp;
+                    } else if (tmp < min) {
+                        min = tmp;
+                    }
+                }
+                i = i + 1;
+            }
+            for (var key in wardData.food) {
+                tmp = wardData.food[key];
+                values.push((tmp - min) / (max - min));
+            }
+            value = 0;
+            values.forEach(function(item) {
+                value = value + item
+            });
+            return {
+                weight: 2,
+                opacity: 0.1,
+                color: 'black',
+                fillOpacity: 0.8,
+                fillColor: getRentColor(value)
+            };
+        }
+    }),
 
     marketBasket = L.geoJson(wards, {
         style: function(feature ) {
@@ -95,18 +121,43 @@ var layerMenus = {
     }),
 
     //Income & Employment
-    // aggregate = L.geoJson(wards, {
-    //     style: function(feature ) {
-    //         wardData = getWardData(feature.properties.WARD)
-    //         return {
-    //             weight: 2,
-    //             opacity: 0.1,
-    //             color: 'black',
-    //             fillOpacity: 0.8,
-    //             fillColor: getRentColor(wardData.income.median_rent_unit)
-    //         };
-    //     }
-    // }),
+    incomeAggregate = L.geoJson(wards, {
+        style: function(feature ) {
+            wardData = getWardData(feature.properties.WARD)
+            values = [];
+            min = 0;
+            max = 0;
+            i = 0;
+            for (var key in wardData.income_employment) {
+                if (i == 0) {
+                    min = wardData.income_employment[key];
+                    max = wardData.income_employment[key];
+                } else {
+                    tmp = wardData.income_employment[key];
+                    if (tmp > max) {
+                        max = tmp;
+                    } else if (tmp < min) {
+                        min = tmp;
+                    }
+                }
+            }
+            for (var key in wardData.income_employment) {
+                tmp = wardData.income_employment[key];
+                values.push((tmp - min) / (max - min));
+            }
+            value = 0;
+            values.forEach(function(item) {
+                value = value + item
+            });
+            return {
+                weight: 2,
+                opacity: 0.1,
+                color: 'black',
+                fillOpacity: 0.8,
+                fillColor: getRentColor(value)
+            };
+        }
+    }),
 
     medFamIncLayer = L.geoJson(wards, {
         style: function(feature ) {
@@ -116,7 +167,7 @@ var layerMenus = {
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 0.8,
-                fillColor: getRentColor(wardData.income.median_fam)
+                fillColor: getRentColor(wardData.income_employment.median_fam)
             };
         }
     });
@@ -124,12 +175,14 @@ var layerMenus = {
 addLayer(medRentLayer, layerMenus["rent"], 'Median Rent / Unit', 1)
 addLayer(avgRentLayer, layerMenus["rent"], 'Average Rent / Unit', 2)
 
+addLayer(foodAggregate, layerMenus["food"], 'Food Aggregate', 1)
 addLayer(marketBasket, layerMenus["food"], 'Market Basket Measure', 3)
 addLayer(busStops, layerMenus["food"], 'Bus Stops (density)', 4)
 
+addLayer(incomeAggregate, layerMenus["income"], 'Income Aggregate', 1)
 addLayer(medFamIncLayer, layerMenus["income"], 'Median Family Income', 3)
 
-allLayers = [medRentLayer, avgRentLayer, marketBasket, busStops, medFamIncLayer];
+allLayers = [medRentLayer, avgRentLayer, foodAggregate, marketBasket, busStops, incomeAggregate, medFamIncLayer];
 
 function addLayer(layer, layerMenu, name, zIndex) {
     layer.setZIndex(zIndex);
