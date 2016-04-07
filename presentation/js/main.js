@@ -93,8 +93,8 @@ var layerMenus = {
     foodAggregate = L.geoJson(wards, {
         style: function(feature ) {
             wardData = getWardData(feature.properties.WARD)
-            value = getAggregateValue(wardData.food);
-            // alert("Food " +  feature.properties.WARD + ": " + value);
+            value = getAggregateValue(wardData.food, 'food');
+            alert("Food " +  feature.properties.WARD + ": " + value);
             return {
                 weight: 2,
                 opacity: 0.1,
@@ -163,8 +163,8 @@ var layerMenus = {
     incomeAggregate = L.geoJson(wards, {
         style: function(feature ) {
             wardData = getWardData(feature.properties.WARD)
-            value = getAggregateValue(wardData.income_employment);
-            // alert("Income " +  feature.properties.WARD + ": " + value);
+            value = getAggregateValue(wardData.income_employment, 'income_employment');
+            alert("Income " +  feature.properties.WARD + ": " + value);
             return {
                 weight: 2,
                 opacity: 0.1,
@@ -188,30 +188,32 @@ var layerMenus = {
         }
     });
 
-function getAggregateValue(dataSet) {
+function getAggregateValue(dataSet, concept) {
     values = [];
     min = 0;
     max = 0;
     i = 0;
 
-    //get max and min of the set
-    for (var key in dataSet) {
-        if (i == 0) {
-            min = dataSet[key];
-            max = dataSet[key];
-        } else {
-            tmp = dataSet[key];
-            if (tmp > max) {
-                max = tmp;
-            } else if (tmp < min) {
-                min = tmp;
-            }
-        }
-        i = i + 1;
-    }
+    wards = [ward1, ward2, ward3, ward4, ward5, ward6];
 
-    //get all the standardized values
     for (var key in dataSet) {
+        i = 0;
+        wards.forEach(function(wardData){
+            tmp = wardData[concept][key]
+            if (i == 0){
+                min = tmp;
+                max = tmp;
+            }
+            else {
+                if (tmp > max) {
+                    max = tmp;
+                } else if (tmp < min) {
+                    min = tmp;
+                }
+            }
+            i = i + 1;
+        });
+
         tmp = dataSet[key];
         values.push((tmp - min) / (max - min));
     }
