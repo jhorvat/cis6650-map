@@ -1,7 +1,17 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoidGVhbW1pZGRsZXRhYmxlIiwiYSI6ImNpbDZ0cHRuMDA1eml1MGx2bjVvd2RpNm8ifQ.H7TauzsEVrD4fvr0ORQq8w';
 
-var map = L.mapbox.map('map', 'mapbox.light')
-            .setView([43.535139, -80.235302], 12);
+var map = L.mapbox.map('map', 'mapbox.light', {
+                zoomControl: false
+            }).setView([43.535139, -80.235302], 12);
+
+map.dragging.disable();
+map.touchZoom.disable();
+map.doubleClickZoom.disable();
+map.scrollWheelZoom.disable();
+map.keyboard.disable();
+
+// Disable tap handler, if present.
+if (map.tap) map.tap.disable();
 
 var getWardData = function(wardNum) {
     if (wardNum == "1") {
@@ -40,6 +50,18 @@ var layerMenus = {
     //     }
     // }),
 
+    wardLabelsLayer = L.geoJson(wardLabels, {
+        pointToLayer: function(feature, ll) {
+            return L.marker(ll, {
+                icon: L.divIcon({
+                    className: 'ward-label',
+                    html: feature.properties.title,
+                    iconSize: [60, 60]
+                })
+            });
+        }
+    }),
+
     marketBasket = L.geoJson(wards, {
         style: function(feature ) {
             wardData = getWardData(feature.properties.WARD);
@@ -67,7 +89,7 @@ var layerMenus = {
         }
     }),
 
-    //Housing 
+    //Housing
     medRentLayer = L.geoJson(wards, {
         style: function(feature ) {
             wardData = getWardData(feature.properties.WARD);
@@ -129,7 +151,7 @@ addLayer(busStops, layerMenus["food"], 'Bus Stops (density)', 4)
 
 addLayer(medFamIncLayer, layerMenus["income"], 'Median Family Income', 3)
 
-allLayers = [medRentLayer, avgRentLayer, marketBasket, busStops, medFamIncLayer];
+allLayers = [medRentLayer, avgRentLayer, marketBasket, busStops, medFamIncLayer, wardLabelsLayer];
 
 function addLayer(layer, layerMenu, name, zIndex) {
     layer.setZIndex(zIndex);
@@ -153,6 +175,7 @@ function addLayer(layer, layerMenu, name, zIndex) {
         $(".menu-ui .list-group-item").removeClass("active")
         $(this).addClass('active');
         map.addLayer(layer);
+        map.addLayer(wardLabelsLayer);
     };
     layerMenu.append(link);
 }
