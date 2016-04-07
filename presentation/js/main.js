@@ -249,6 +249,20 @@ function addLayer(layer, layerMenu, name, zIndex, breaks) {
         link.className = link.className + ' active';
         map.addLayer(layer);
         map.addLayer(wardLabelsLayer);
+
+        var legend = $(".legend");
+
+        legend.empty();
+        legend.append(legendUnitTemplate({
+            colour: "#feedde",
+            unit: "0",
+        }));
+        for (var key in breaks) {
+            legend.append(legendUnitTemplate({
+                colour: breaks[key],
+                unit: key,
+            }));
+        }
     }
 
     link.onclick = function(e) {
