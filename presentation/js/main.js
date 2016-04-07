@@ -118,6 +118,8 @@ var layerMenus = {
             values.forEach(function(item) {
                 value = value + item
             });
+            value = value / values.length;
+            alert("Food " +  feature.properties.WARD + ": " + value);
             return {
                 weight: 2,
                 opacity: 0.1,
@@ -202,6 +204,7 @@ var layerMenus = {
                         min = tmp;
                     }
                 }
+                i = i + 1;
             }
             for (var key in wardData.income_employment) {
                 tmp = wardData.income_employment[key];
@@ -211,6 +214,8 @@ var layerMenus = {
             values.forEach(function(item) {
                 value = value + item
             });
+            value = value / values.length;
+            alert("Income " +  feature.properties.WARD + ": " + value);
             return {
                 weight: 2,
                 opacity: 0.1,
