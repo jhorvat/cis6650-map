@@ -94,7 +94,6 @@ var layerMenus = {
         style: function(feature ) {
             wardData = getWardData(feature.properties.WARD)
             value = getAggregateValue(wardData.food, 'food');
-            alert("Food " +  feature.properties.WARD + ": " + value);
             return {
                 weight: 2,
                 opacity: 0.1,
@@ -164,7 +163,6 @@ var layerMenus = {
         style: function(feature ) {
             wardData = getWardData(feature.properties.WARD)
             value = getAggregateValue(wardData.income_employment, 'income_employment');
-            alert("Income " +  feature.properties.WARD + ": " + value);
             return {
                 weight: 2,
                 opacity: 0.1,
@@ -194,11 +192,11 @@ function getAggregateValue(dataSet, concept) {
     max = 0;
     i = 0;
 
-    wards = [ward1, ward2, ward3, ward4, ward5, ward6];
+    allTheWards = [ward1, ward2, ward3, ward4, ward5, ward6];
 
     for (var key in dataSet) {
         i = 0;
-        wards.forEach(function(wardData){
+        allTheWards.forEach(function(wardData){
             tmp = wardData[concept][key]
             if (i == 0){
                 min = tmp;
