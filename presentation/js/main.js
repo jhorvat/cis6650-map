@@ -1,7 +1,17 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoidGVhbW1pZGRsZXRhYmxlIiwiYSI6ImNpbDZ0cHRuMDA1eml1MGx2bjVvd2RpNm8ifQ.H7TauzsEVrD4fvr0ORQq8w';
 
-var map = L.mapbox.map('map', 'mapbox.light')
-            .setView([43.535139, -80.235302], 12);
+var map = L.mapbox.map('map', 'mapbox.light', {
+                zoomControl: false
+            }).setView([43.535139, -80.235302], 12);
+
+map.dragging.disable();
+map.touchZoom.disable();
+map.doubleClickZoom.disable();
+map.scrollWheelZoom.disable();
+map.keyboard.disable();
+
+// Disable tap handler, if present.
+if (map.tap) map.tap.disable();
 
 var layerMenus = {
         "food": $("#collapseOne"),
@@ -14,9 +24,9 @@ var layerMenus = {
         pointToLayer: function(feature, ll) {
             return L.marker(ll, {
                 icon: L.divIcon({
-                    className: 'label',
+                    className: 'ward-label',
                     html: feature.properties.title,
-                    iconSize: [100, 40]
+                    iconSize: [60, 60]
                 })
             });
         }
@@ -102,7 +112,6 @@ var layerMenus = {
 // });
 // foodLayers.push(foodAggregateLayer)
 
-map.addLayer(wardLabelsLayer);
 
 addLayer(rentLayer, layerMenus["rent"], 'Rent Layer', 1)
 addLayer(busStops, layerMenus["income"], 'Bus Stops (density)', 2)
@@ -110,7 +119,7 @@ addLayer(kitchens, layerMenus["food"], 'Kitchens (density)', 3)
 addLayer(pantries, layerMenus["food"], 'Pantries (density)', 4)
 addLayer(gardens, layerMenus["food"], 'Gardens (density)', 5)
 
-allLayers = [rentLayer, busStops, kitchens, pantries, gardens];
+allLayers = [rentLayer, busStops, kitchens, pantries, gardens, wardLabelsLayer];
 
 function addLayer(layer, layerMenu, name, zIndex) {
     layer.setZIndex(zIndex);
@@ -134,6 +143,7 @@ function addLayer(layer, layerMenu, name, zIndex) {
         $(".menu-ui .list-group-item").removeClass("active")
         $(this).addClass('active');
         map.addLayer(layer);
+        map.addLayer(wardLabelsLayer);
     };
     layerMenu.append(link);
 }
