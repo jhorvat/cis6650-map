@@ -67,6 +67,7 @@
             .menu-ui .card-title a {
                 color: #000;
                 text-decoration: none;
+                display: block;
             }
 
             .menu-ui .card-title a:hover {
@@ -104,45 +105,13 @@
                 display: block;
                 height: 15px;
             }
-
-            .scale {
-                margin-bottom: 0;
-                color: #808080;
-                font-size: .70rem;
-            }
         </style>
     </head>
     <body>
         <div id='menu-ui' class='card menu-ui text-xs-center' role="tablist" aria-multiselectable="true">
-            <div id="legend" class="card-block">
+            <div class="card-block">
                 <div class="card-title">Legend</div>
-                <div class="legend">
-                    <div class="unit">
-                        <span style='background:#feedde;'></span>
-                        <label>0</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#fdd0a2;'></span>
-                        <label>20</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#fdae6b;'></span>
-                        <label>40</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#fd8d3c;'></span>
-                        <label>60</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#e6550d;'></span>
-                        <label>80</label>
-                    </div>
-                    <div class="unit">
-                        <span style='background:#a63603;'></span>
-                        <label>100</label>
-                    </div>
-                </div>
-                <p class="scale">Percent (%)</p>
+                <div class="legend"></div>
             </div>
             <div class="card-block">
                 <div class="card-title" id="headingOne" role="tab">
@@ -169,6 +138,13 @@
 
         <script id="layerTPL" type="text/template">
             <li class="list-group-item"><%= layerName %></li>
+        </script>
+
+        <script id="legendUnitTPL" type="text/template">
+            <div class="unit">
+                <span style='background:<%= colour %>;'></span>
+                <label><%= unit %></label>
+            </div>
         </script>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
