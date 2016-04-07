@@ -92,34 +92,8 @@ var layerMenus = {
     foodAggregate = L.geoJson(wards, {
         style: function(feature ) {
             wardData = getWardData(feature.properties.WARD)
-            values = [];
-            min = 0;
-            max = 0;
-            i = 0;
-            for (var key in wardData.food) {
-                if (i == 0) {
-                    min = wardData.food[key];
-                    max = wardData.food[key];
-                } else {
-                    tmp = wardData.food[key];
-                    if (tmp > max) {
-                        max = tmp;
-                    } else if (tmp < min) {
-                        min = tmp;
-                    }
-                }
-                i = i + 1;
-            }
-            for (var key in wardData.food) {
-                tmp = wardData.food[key];
-                values.push((tmp - min) / (max - min));
-            }
-            value = 0;
-            values.forEach(function(item) {
-                value = value + item
-            });
-            value = value / values.length;
-            alert("Food " +  feature.properties.WARD + ": " + value);
+            value = getAggregateValue(wardData.food);
+            // alert("Food " +  feature.properties.WARD + ": " + value);
             return {
                 weight: 2,
                 opacity: 0.1,
@@ -188,34 +162,8 @@ var layerMenus = {
     incomeAggregate = L.geoJson(wards, {
         style: function(feature ) {
             wardData = getWardData(feature.properties.WARD)
-            values = [];
-            min = 0;
-            max = 0;
-            i = 0;
-            for (var key in wardData.income_employment) {
-                if (i == 0) {
-                    min = wardData.income_employment[key];
-                    max = wardData.income_employment[key];
-                } else {
-                    tmp = wardData.income_employment[key];
-                    if (tmp > max) {
-                        max = tmp;
-                    } else if (tmp < min) {
-                        min = tmp;
-                    }
-                }
-                i = i + 1;
-            }
-            for (var key in wardData.income_employment) {
-                tmp = wardData.income_employment[key];
-                values.push((tmp - min) / (max - min));
-            }
-            value = 0;
-            values.forEach(function(item) {
-                value = value + item
-            });
-            value = value / values.length;
-            alert("Income " +  feature.properties.WARD + ": " + value);
+            value = getAggregateValue(wardData.income_employment);
+            // alert("Income " +  feature.properties.WARD + ": " + value);
             return {
                 weight: 2,
                 opacity: 0.1,
@@ -239,6 +187,44 @@ var layerMenus = {
         }
     });
 
+function getAggregateValue(dataSet) {
+    values = [];
+    min = 0;
+    max = 0;
+    i = 0;
+
+    //get max and min of the set
+    for (var key in dataSet) {
+        if (i == 0) {
+            min = dataSet[key];
+            max = dataSet[key];
+        } else {
+            tmp = dataSet[key];
+            if (tmp > max) {
+                max = tmp;
+            } else if (tmp < min) {
+                min = tmp;
+            }
+        }
+        i = i + 1;
+    }
+
+    //get all the standardized values
+    for (var key in dataSet) {
+        tmp = dataSet[key];
+        values.push((tmp - min) / (max - min));
+    }
+
+    //average all the standardized values
+    value = 0;
+    values.forEach(function(item) {
+        value = value + item
+    });
+    value = value / values.length;
+
+    return value
+}
+
 addLayer(medRentLayer, layerMenus["rent"], 'Median Rent / Unit', 1)
 addLayer(avgRentLayer, layerMenus["rent"], 'Average Rent / Unit', 2)
 
@@ -258,7 +244,14 @@ function addLayer(layer, layerMenu, name, zIndex) {
     // Create a simple layer switcher that
     // toggles layers on and off.
     var link = $.parseHTML(layerItemTemplate({ layerName: name }).trim())[0];
+    if (name == 'Food Aggregate') {
+        link.className = link.className + ' active';
+        map.addLayer(layer);
+        map.addLayer(wardLabelsLayer);
+    }
+
     console.log(layerMenu);
+
     link.onclick = function(e) {
         e.preventDefault();
         e.stopPropagation();
